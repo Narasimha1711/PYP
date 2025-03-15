@@ -8,6 +8,11 @@ const UserSchema = new mongoose.Schema({
     otp: { type: String, required: false },
     isActive: { type: Boolean, required: false },
     mobileNumber: { type: Number, required: true },
+    languages: {
+        type: [String],
+        enum: ["English", "Hindi", "Telugu", "Tamil", "Kannada", "Malayalam"],
+        required: false
+    },
     skills: {
         type: [String],
         enum: ["Web Development", "Machine Learning", "Cyber Security", "DSA"],
@@ -15,7 +20,8 @@ const UserSchema = new mongoose.Schema({
     },
     projectsAchievements: { type: [String], required: false },
     interestedSubjects: { type: [String], required: false },
-    is_private: { type: Boolean, required: false, default: false }
+    is_private: { type: Boolean, required: false, default: false },
+    
 });
 
 const User = mongoose.model('User', UserSchema);
