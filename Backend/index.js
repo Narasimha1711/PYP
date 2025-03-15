@@ -10,6 +10,7 @@ connectDB();
 app.use(express.json());
 app.use(errorMiddleware);
 app.use(express.urlencoded({extended:true}));
+app.use(cookieParser());
 
 
 const AuthRoutes = require("./routes/auth.js");

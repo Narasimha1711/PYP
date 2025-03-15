@@ -33,7 +33,7 @@ const signup = async (req, res) => {
         await newUser.save();
 
         // Generate JWT token
-        const token = jwt.sign({ userId: newUser._id, gmail: newUser.gmail }, process.env.SECRET_KEY, { expiresIn: '1h' });
+        const token = jwt.sign({ userId: newUser._id, rollNo: newUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
         res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
@@ -58,6 +58,8 @@ const signin = async(req, res) => {
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
+
+        const token = jwt.sign({ userId: existingUser._id, rollNo: existingUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
         
         res.status(200).json({ message: 'User signed in successfully' });
 
