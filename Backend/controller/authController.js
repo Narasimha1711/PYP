@@ -1,4 +1,4 @@
-const bcrypt = require('bcrypt');
+const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
 
 const signup = async (req, res) => {
@@ -12,7 +12,7 @@ const signup = async (req, res) => {
         }
 
         // Hash password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptjs.hash(password, 10);
 
         // Create new user
         const newUser = new User({
