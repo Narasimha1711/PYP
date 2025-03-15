@@ -4,7 +4,7 @@ const UserSchema = new mongoose.Schema({
     rollNo: { type: String, required: true },
     name: { type: String, required: true },
     gmail: { type: String, required: false },
-    password: { type: String, required: false },
+    password: { type: String, required: false},
     otp: { type: String, required: false },
     isActive: { type: Boolean, required: false },
     mobileNumber: { type: Number, required: true },
