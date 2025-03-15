@@ -11,7 +11,7 @@ const UserSchema = new mongoose.Schema({
     },
     projectsAchievements: { type: [String], required: false },
     interestedSubjects: { type: [String], required: false },
-    is_private: { type: Boolean, required: false }
+    is_private: { type: Boolean, required: false, default: false }
 });
 
 const User = mongoose.model('User', UserSchema);
