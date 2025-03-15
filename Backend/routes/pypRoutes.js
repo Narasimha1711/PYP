@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 
+const PypController = require("./controller/pypController");
 
+router.get("/pyp",PypController);
 
-router.get("/pyp",)
+module.exports = router;
