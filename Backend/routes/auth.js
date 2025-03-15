@@ -5,23 +5,9 @@ const User = require('../models/User');
 
 const router = express.Router();
 
+const AuthController = require('../controller/authController.js');
 // Signup Route
-router.post('/signup', async (req, res) => {
-    try {
-        const { rollNo, name, mobileNumber, password } = req.body;
-
-        const existingUser = await User.findOne({ rollNo });
-        if (existingUser) return res.status(400).json({ message: 'User already exists' });
-
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ rollNo, name, mobileNumber, password: hashedPassword });
-        await newUser.save();
-
-        res.status(201).json({ message: 'User registered successfully' });
-    } catch (error) {
-        res.status(500).json({ message: 'Server error', error });
-    }
-});
+router.post('/signup',AuthController.signup);
 
 // Signin Route
 router.post('/signin', async (req, res) => {
