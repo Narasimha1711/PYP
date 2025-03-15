@@ -1,19 +1,20 @@
+require('dotenv').config();
 const bcryptjs = require('bcryptjs');
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 const signup = async (req, res) => {
     try {
         const { rollNo, name, gmail, password, mobileNumber, languages, skills, projectsAchievements, interestedSubjects, is_private } = req.body;
 
         // Check if user already exists
-        const existingUser = await User.findOne({ gmail, rollNo });
+        const existingUser = await User.findOne({ rollNo });
         if (existingUser) {
             return res.status(400).json({ message: 'User already exists' });
         }
 
-        // Hash password
-        const salt = await bcryptjs.genSalt(10); // Generate salt
-        const hashedPassword = await bcryptjs.hash(password, salt);
+        // Hash the password
+        const hashedPassword = await bcrypt.hash(password, 10);
 
         // Create new user
         const newUser = new User({
@@ -30,9 +31,12 @@ const signup = async (req, res) => {
         });
 
         await newUser.save();
-        res.status(201).json({ message: 'User registered successfully' });
+
+        // Generate JWT token
+        const token = jwt.sign({ userId: newUser._id, gmail: newUser.gmail }, process.env.SECRET_KEY, { expiresIn: '1h' });
+
+        res.status(201).json({ message: 'User registered successfully', token });
     } catch (error) {
-        console.log(error);
         res.status(500).json({ message: 'Error signing up', error });
     }
 };
