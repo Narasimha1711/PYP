@@ -11,6 +11,14 @@ app.use(express.json());
 
 
 
+const AuthRoutes = require("./routes/auth.js");
+const PypRoutes = require("./routes/pypRoutes");
+
+app.get("/signin",AuthRoutes);
+app.get("/signup",AuthRoutes);
+app.post("/signin",AuthRoutes);
+app.post("/signup",AuthRoutes);
+app.get("/pyp",PypRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is listening on PORT ${PORT}`);
