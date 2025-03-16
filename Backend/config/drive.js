@@ -4,8 +4,8 @@ const path = require("path");
 require("dotenv").config();
 
 // Load credentials
-const KEYFILEPATH = path.join(__dirname, "drive.json");
-const SCOPES = ["https://www.googleapis.com/auth/drive"];
+// const KEYFILEPATH = path.join(__dirname, "drive.json");
+// const SCOPES = ["https://www.googleapis.com/auth/drive"];
 
 const auth = new google.auth.GoogleAuth({
     credentials: {
