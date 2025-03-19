@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const Pyp = require('../models/PastYearPapers');
 const User = require('../models/User');
+const PastYearPapers = require('../models/PastYearPapers');
 
 const sendInfo = async (req, res) => {
     try {
@@ -16,7 +17,13 @@ const sendInfo = async (req, res) => {
 
         // Fetch all subjects from PastYearPapers
         const pastYearPapers = await Pyp.find({});
-        const subjects = pastYearPapers.map(paper => paper.subject).filter(Boolean);
+        const subjects = pastYearPapers
+            .map(paper => ({
+                subjectId: paper.subjectId,
+                subject: paper.subject,
+                gateQuestions: paper.gateQuestions || ""
+            }))
+            .filter(paper => paper.subjectId);
 
         // Fetch user details using roll number
         const user = await User.findOne({ rollNo });
@@ -37,10 +44,10 @@ const sendInfo = async (req, res) => {
 // Function to add a starred (favorite) subject
 const addStarredSubject = async (req, res) => {
     try {
-        // Extract subject name from request body
-        const { subject } = req.body;
-        if (!subject) {
-            return res.status(400).json({ message: "Subject is required" });
+        // Extract subjectId from request body
+        const { subjectId } = req.body;
+        if (!subjectId) {
+            return res.status(400).json({ message: "Subject ID is required" });
         }
 
         // Extract token from cookies
@@ -54,10 +61,19 @@ const addStarredSubject = async (req, res) => {
         const rollNo = decoded.rollNo;
 
         // Find the user
+        // console.log(rollNo);
         const user = await User.findOne({ rollNo });
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+
+        // Find the subject by ID
+        const subjectDoc = await PastYearPapers.findOne({subjectId});
+        if (!subjectDoc) {
+            return res.status(404).json({ message: "Subject not found" });
+        }
+    
+        const subject = subjectDoc.subjectId;
 
         // Check if the subject is already in interestedSubjects
         if (user.interestedSubjects.includes(subject)) {
@@ -75,13 +91,13 @@ const addStarredSubject = async (req, res) => {
     }
 };
 
-// Function to delete a starred (favorite) subject
 const deleteStarredSubject = async (req, res) => {
     try {
-        // Extract subject name from request body
-        const { subject } = req.body;
-        if (!subject) {
-            return res.status(400).json({ message: "Subject is required" });
+        // Extract subjectId from request body
+
+        const { subjectId } = req.body;
+        if (!subjectId) {
+            return res.status(400).json({ message: "Subject ID is required" });
         }
 
         // Extract token from cookies
@@ -100,6 +116,13 @@ const deleteStarredSubject = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
+        // Find the subject by ID
+        const subjectDoc = await Pyp.findOne({subjectId});
+        if (!subjectDoc) {
+            return res.status(404).json({ message: "Subject not found" });
+        }
+        const subject = subjectDoc.subjectId;
+
         // Check if the subject exists in interestedSubjects
         if (!user.interestedSubjects.includes(subject)) {
             return res.status(400).json({ message: "Subject not in favorite subjects" });
@@ -116,4 +139,37 @@ const deleteStarredSubject = async (req, res) => {
     }
 };
 
-module.exports = { sendInfo, addStarredSubject, deleteStarredSubject };
+
+const sendPapers = async (req, res) => {
+    try {
+        // Extract query parameter in the format x/y
+        const query = req.params;
+        
+        const { id: subjectId, type: examType } = query;
+
+        if (!subjectId || !examType) {
+            return res.status(400).json({ message: "Invalid query format. Use subjectId/examType." });
+        }
+
+        // Find the subject by ID
+        const subjectDoc = await Pyp.findOne({subjectId});
+        if (!subjectDoc) {
+            return res.status(404).json({ message: "Subject not found" });
+        }
+
+        // Check if the requested examType exists in the document
+        if (!subjectDoc[examType]) {
+            return res.status(400).json({ message: "Invalid exam type" });
+        }
+
+        // Send response with requested exam type papers
+        res.status(200).json({ papers: subjectDoc[examType] });
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching papers", error });
+    }
+};
+
+
+
+
+module.exports = { sendInfo, addStarredSubject, deleteStarredSubject, sendPapers };

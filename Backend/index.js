@@ -6,6 +6,8 @@ const connectDB = require('./config/dbConnection');
 const errorMiddleware = require('./middleware/errorMiddleware');
 const PORT = process.env.PORT;
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
+const PypRoutes = require("./routes/pypRoutes");
 
 connectDB();
 app.use(express.json());
@@ -13,16 +15,17 @@ app.use(errorMiddleware);
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
+app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
 const AuthRoutes = require("./routes/auth.js");
-// const PypRoutes = require("./routes/pypRoutes");
+
 
 app.use("/auth", AuthRoutes);
 app.use("/auth", AuthRoutes);
 
 app.use("/auth", AuthRoutes);
 app.use("/auth", AuthRoutes);
-// app.get("/pyp", PypRoutes);
+app.use("/pyp", PypRoutes);
 
 app.get("/", (req, res)=>{
     res.send("Welcome to the Backend");
@@ -31,7 +34,7 @@ app.get("/", (req, res)=>{
 
 const uploadRoutes = require("./routes/upload");
 
-app.use(express.json());
+
 app.use("/api", uploadRoutes); 
 
 app.listen(PORT, () => {

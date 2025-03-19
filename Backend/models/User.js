@@ -7,7 +7,7 @@ const UserSchema = new mongoose.Schema({
     password: { type: String, required: false},
     otp: { type: String, required: false },
     isActive: { type: Boolean, required: false },
-    mobileNumber: { type: Number, required: true },
+    mobileNumber: { type: Number, required: false },
     languages: {
         type: [String],
         enum: ["English", "Hindi", "Telugu", "Tamil", "Kannada", "Malayalam"],
@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
     },
     skills: {
         type: [String],
-        enum: ["Web Development", "Machine Learning", "Cyber Security", "DSA"],
+        enum: ["Web Development", "Machine Learning", "Cyber Security", "DSA","App Development"],
         required: false
     },
     projectsAchievements: { type: [String], required: false },
