@@ -1,5 +1,6 @@
-
-
+const drive = require("../config/drive");
+const fs = require("fs");
+const PastYearPapers = require('../models/PastYearPapers');
 async function makeFilePublic(fileId, userEmail) {
     await drive.permissions.create({
         fileId: fileId,
@@ -111,7 +112,7 @@ const uploadDB = async(req, res) => {
         const { subjectId, subject, typeExamination, year, papers } = req.body;
 
         // Find or create the document
-        let pastPaper = await PastYearPapers.findOne({ subjectId, subject });
+        let pastPaper = await PastYearPapers.findOne({ subjectId});
 
         if (!pastPaper) {
             // Create a new document if it doesn't exist
@@ -123,6 +124,9 @@ const uploadDB = async(req, res) => {
 
             await pastPaper.save();
             return res.status(201).json({ message: "New subject created with exam papers", pastPaper });
+        }
+        else {
+            pastPaper[typeExamination].push({ year, papers });
         }
 
         // Check if the typeExamination array exists

@@ -14,7 +14,7 @@ const signup = async (req, res) => {
         }
 
         // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
+        const hashedPassword = await bcryptjs.hash(password, 10);
 
         // Create new user
         const newUser = new User({
@@ -35,8 +35,11 @@ const signup = async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ userId: newUser._id, rollNo: newUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
-        res.status(201).json({ message: 'User registered successfully', token });
+
+
+        res.status(201).json({ message: 'User registered successfully'});
     } catch (error) {
+        console.log(error)
         res.status(500).json({ message: 'Error signing up', error });
     }
 };
@@ -60,6 +63,13 @@ const signin = async(req, res) => {
         }
 
         const token = jwt.sign({ userId: existingUser._id, rollNo: existingUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
+
+        res.cookie('token', token, {
+            httpOnly: true,  // Prevents access from JavaScript
+            // secure: process.env.NODE_ENV === 'production', // Secure in production
+            sameSite: 'Strict',  // Prevents CSRF attacks
+            maxAge: 3600000, // 1 hour (in milliseconds)
+        });
         
         res.status(200).json({ message: 'User signed in successfully' });
 
