@@ -1,0 +1,87 @@
+{
+    "studentId": "2024001",
+    "name": "John Doe",
+    "CGPA": 8.4,
+    "semesters": [
+      {
+        "semester": 1,
+        "SGPA": 8.2,
+        "subjects": [
+          { "subjectCode": "CS101", "subjectName": "Programming", "credits": 4, "grade": "A" },
+          { "subjectCode": "MA101", "subjectName": "Mathematics", "credits": 3, "grade": "B+" },
+          { "subjectCode": "PH101", "subjectName": "Physics", "credits": 3, "grade": "A-" },
+          { "subjectCode": "HS101", "subjectName": "English", "credits": 2, "grade": "B" }
+        ]
+      },
+      {
+        "semester": 2,
+        "SGPA": 8.5,
+        "subjects": [
+          { "subjectCode": "CS102", "subjectName": "Data Structures", "credits": 4, "grade": "A+" },
+          { "subjectCode": "MA102", "subjectName": "Statistics", "credits": 3, "grade": "B+" },
+          { "subjectCode": "CH101", "subjectName": "Chemistry", "credits": 3, "grade": "A" },
+          { "subjectCode": "ME101", "subjectName": "Engineering Drawing", "credits": 2, "grade": "A-" }
+        ]
+      },
+      {
+        "semester": 3,
+        "SGPA": 8.7,
+        "subjects": [
+          { "subjectCode": "CS201", "subjectName": "Algorithms", "credits": 4, "grade": "A" },
+          { "subjectCode": "CS202", "subjectName": "OOP", "credits": 4, "grade": "A+" },
+          { "subjectCode": "EC201", "subjectName": "Digital Logic", "credits": 3, "grade": "B+" },
+          { "subjectCode": "HS201", "subjectName": "Communication Skills", "credits": 2, "grade": "A-" }
+        ]
+      },
+      {
+        "semester": 4,
+        "SGPA": 8.3,
+        "subjects": [
+          { "subjectCode": "CS301", "subjectName": "Operating Systems", "credits": 4, "grade": "A" },
+          { "subjectCode": "CS302", "subjectName": "DBMS", "credits": 4, "grade": "B+" },
+          { "subjectCode": "EC301", "subjectName": "Microprocessors", "credits": 3, "grade": "A-" },
+          { "subjectCode": "HS301", "subjectName": "Ethics", "credits": 2, "grade": "A" }
+        ]
+      },
+      {
+        "semester": 5,
+        "SGPA": 8.6,
+        "subjects": [
+          { "subjectCode": "CS401", "subjectName": "Computer Networks", "credits": 4, "grade": "A+" },
+          { "subjectCode": "CS402", "subjectName": "Machine Learning", "credits": 4, "grade": "A" },
+          { "subjectCode": "IT401", "subjectName": "Cloud Computing", "credits": 3, "grade": "B+" },
+          { "subjectCode": "IT402", "subjectName": "Cyber Security", "credits": 2, "grade": "A" }
+        ]
+      },
+      {
+        "semester": 6,
+        "SGPA": 8.1,
+        "subjects": [
+          { "subjectCode": "CS501", "subjectName": "Software Engineering", "credits": 4, "grade": "A" },
+          { "subjectCode": "CS502", "subjectName": "AI & Deep Learning", "credits": 4, "grade": "B+" },
+          { "subjectCode": "CS503", "subjectName": "Big Data", "credits": 3, "grade": "A-" },
+          { "subjectCode": "CS504", "subjectName": "IoT", "credits": 2, "grade": "A" }
+        ]
+      },
+      {
+        "semester": 7,
+        "SGPA": 8.9,
+        "subjects": [
+          { "subjectCode": "CS601", "subjectName": "Blockchain", "credits": 4, "grade": "A+" },
+          { "subjectCode": "CS602", "subjectName": "Quantum Computing", "credits": 4, "grade": "A" },
+          { "subjectCode": "CS603", "subjectName": "AR/VR", "credits": 3, "grade": "B+" },
+          { "subjectCode": "CS604", "subjectName": "Computer Vision", "credits": 2, "grade": "A" }
+        ]
+      },
+      {
+        "semester": 8,
+        "SGPA": 9.0,
+        "subjects": [
+          { "subjectCode": "CS701", "subjectName": "Research Project", "credits": 6, "grade": "A+" },
+          { "subjectCode": "CS702", "subjectName": "Entrepreneurship", "credits": 3, "grade": "A" },
+          { "subjectCode": "CS703", "subjectName": "Cyber-Physical Systems", "credits": 3, "grade": "A-" }
+        ]
+      }
+    ]
+  }
+  

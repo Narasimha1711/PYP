@@ -35,24 +35,18 @@ const signup = async (req, res) => {
         // Generate JWT token
         const token = jwt.sign({ userId: newUser._id, rollNo: newUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
-
-
-        res.status(201).json({ message: 'User registered successfully'});
+        res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.log(error)
+        console.log(error);
         res.status(500).json({ message: 'Error signing up', error });
     }
 };
 
-
-const signin = async(req, res) => {
-
+const signin = async (req, res) => {
     const { rollNo, password } = req.body;
 
     try {
-        const existingUser = await User.findOne({
-            rollNo
-        }); 
+        const existingUser = await User.findOne({ rollNo });
         if (!existingUser) {
             return res.status(400).json({ message: 'User does not exist' });
         }
@@ -65,20 +59,27 @@ const signin = async(req, res) => {
         const token = jwt.sign({ userId: existingUser._id, rollNo: existingUser.rollNo }, process.env.SECRET_KEY, { expiresIn: '1h' });
 
         res.cookie('token', token, {
-            httpOnly: true,  // Prevents access from JavaScript
-            // secure: process.env.NODE_ENV === 'production', // Secure in production
-            sameSite: 'Strict',  // Prevents CSRF attacks
-            maxAge: 3600000, // 1 hour (in milliseconds)
+            httpOnly: true,
+            sameSite: 'Strict',
+            maxAge: 3600000,
         });
-        
-        res.status(200).json({ message: 'User signed in successfully' });
 
-    }
-    catch (error) {
+        res.status(200).json({ message: 'User signed in successfully' });
+    } catch (error) {
         res.status(500).json({ message: 'Error signing in', error });
     }
+};
 
+const logout = async (req, res) => {
+    try {
+      res.clearCookie('token', {
+        httpOnly: true,
+        sameSite: 'Strict',
+      });
+      res.status(200).json({ message: 'User signed out successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Error signing out', error });
+    }
+  };
 
-}
-
-module.exports = { signup, signin };
+module.exports = { signup, signin, logout };

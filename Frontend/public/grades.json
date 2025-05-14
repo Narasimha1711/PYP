@@ -1,0 +1,23 @@
+{
+    "2024001": {
+      "name": "John Doe",
+      "CGPA": 8.4,
+      "semesters": {
+        "1": {
+          "SGPA": 8.2,
+          "subjects": [
+            { "code": "CS101", "name": "Programming", "credits": 4, "grade": "A" },
+            { "code": "MA101", "name": "Mathematics", "credits": 3, "grade": "B+" }
+          ]
+        },
+        "2": {
+          "SGPA": 8.5,
+          "subjects": [
+            { "code": "CS102", "name": "Data Structures", "credits": 4, "grade": "A+" },
+            { "code": "MA102", "name": "Statistics", "credits": 3, "grade": "B+" }
+          ]
+        }
+      }
+    }
+  }
+  

@@ -8,7 +8,7 @@ const User = require('../models/User.js')
 
 const router = express.Router();
 
-const { testDrive, uploadFile, uploadDB } = require('../controller/uploadFiles.js');
+const { testDrive, uploadFile, uploadDB, deleteSpecificFilesInFolder } = require('../controller/uploadFiles.js');
 
 // 🔹 Function to validate Google Drive API authentication
 router.get("/test-auth", testDrive);
