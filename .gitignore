@@ -1,0 +1,4 @@
+Backend/config/*.json
+.env
+*.json
+Backend/config/*.json
