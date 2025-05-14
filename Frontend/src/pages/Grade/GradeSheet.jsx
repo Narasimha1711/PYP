@@ -5,6 +5,21 @@ import { updateGrade, setGrades, setCurrentSemester, resetGrades } from '../../a
 import { useDispatch, useSelector } from 'react-redux';
 import { ProgressBar } from '../../../../gradeFiles/ProgressBar';
 
+class ErrorBoundary extends React.Component {
+  state = { hasError: false };
+
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return <div className="text-red-500">Error loading progress bar</div>;
+    }
+    return this.props.children;
+  }
+}
+
 const semesterSubjects = {
   1: [
     { id: '1', name: 'DLD', credits: 4 },
