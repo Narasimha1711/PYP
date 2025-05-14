@@ -8,6 +8,10 @@ const PORT = process.env.PORT;
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 const PypRoutes = require("./routes/pypRoutes");
+const gradeRoutes = require('./routes/gradeRoutes.js')
+
+const TimeTableRoutes = require("./routes/timeTableRoutes.js");
+const UserTimeTableRoutes = require("./routes/userTimeTableRoutes.js");
 
 connectDB();
 app.use(express.json());
@@ -21,15 +25,20 @@ const AuthRoutes = require("./routes/auth.js");
 
 
 app.use("/auth", AuthRoutes);
-app.use("/auth", AuthRoutes);
+// app.use("/auth", AuthRoutes);
 
-app.use("/auth", AuthRoutes);
-app.use("/auth", AuthRoutes);
+// app.use("/auth", AuthRoutes);
+// app.use("/auth", AuthRoutes);
 app.use("/pyp", PypRoutes);
+
+app.use("/tt", TimeTableRoutes);
+app.use("/utt", UserTimeTableRoutes);
 
 app.get("/", (req, res)=>{
     res.send("Welcome to the Backend");
 });
+
+app.use("/grade", gradeRoutes);
 
 
 const uploadRoutes = require("./routes/upload");

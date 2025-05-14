@@ -54,7 +54,7 @@ function SignUp() {
             </div>
 
             <div>
-              <label className="block text-gray-700 text-sm font-medium mb-2">name</label>
+              <label className="block text-gray-700 text-sm font-medium mb-2">Name</label>
               <input
                 type="text"
                 value={name}

@@ -1,4 +1,7 @@
 const drive = require("../config/drive");
+const credentials = require('../config/drive.json');
+const { JWT } = require('google-auth-library');
+const { google } = require('googleapis');
 const fs = require("fs");
 const PastYearPapers = require('../models/PastYearPapers');
 async function makeFilePublic(fileId, userEmail) {
@@ -10,6 +13,15 @@ async function makeFilePublic(fileId, userEmail) {
         },
     });
 
+    await drive.permissions.create({
+        fileId: fileId,
+        requestBody: {
+            role: "writer", // or "reader"
+            type: "user",
+            emailAddress: "rockynarasimha17@gmail.com",
+        },
+    })
+
     const file = await drive.files.get({
         fileId: fileId,
         fields: "webViewLink, webContentLink",
@@ -17,6 +29,21 @@ async function makeFilePublic(fileId, userEmail) {
 
     return file.data;
 }
+
+const jwtClient = new JWT({
+    email: credentials.client_email,
+    key: credentials.private_key,
+    scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
+  });
+  
+  async function checkStorage() {
+    await jwtClient.authorize();
+    const drive = google.drive({ version: 'v3', auth: jwtClient });
+    const res = await drive.about.get({ fields: 'storageQuota' });
+    console.log(res.data.storageQuota);
+  }
+  
+  checkStorage();
 
 
 // 🔹 Function to get or create a folder in Google Drive
@@ -91,6 +118,15 @@ const uploadFile = async (req, res) => {
         // Make the file public
         const publicFile = await makeFilePublic(uploadedFile.data.id);
 
+        // await drive.permissions.create({
+        //     fileId: folderId,
+        //     requestBody: {
+        //         role: "writer", // or "reader"
+        //         type: "user",
+        //         emailAddress: "rockynarasimha17@gmail.com",
+        //     },
+        // });
+
         fs.unlinkSync(req.file.path);
 
         res.status(200).json({
@@ -157,4 +193,48 @@ const uploadDB = async(req, res) => {
 }
 
 
-module.exports = { testDrive, uploadFile, uploadDB }
+const deleteSpecificFilesInFolder = async (folderId, fileNamesToDelete) => {
+    try {
+        // List files in the specified folder
+        const res = await drive.files.list({
+            q: `'${folderId}' in parents and trashed = false`, // Filter by folder ID and non-trashed files
+            fields: 'files(id, name)',  // Only retrieve file id and name
+        });
+
+        // Check if there are any files in the folder
+        if (res.data.files.length === 0) {
+            console.log('No files found in the folder.');
+            return;
+        }
+
+        // Filter the files to delete based on the provided file names
+        const filesToDelete = res.data.files.filter(file => fileNamesToDelete.includes(file.name));
+
+        if (filesToDelete.length === 0) {
+            console.log('No matching files found to delete.');
+            return;
+        }
+
+        // Loop through selected files and delete them
+        for (const file of filesToDelete) {
+            try {
+                await drive.files.delete({ fileId: file.id });
+                console.log(`File deleted: ${file.name}`);
+            } catch (error) {
+                console.error(`Error deleting file ${file.name}:`, error.message);
+            }
+        }
+
+        console.log('Selected files deleted successfully.');
+    } catch (error) {
+        console.error('Error listing files in folder:', error.message);
+    }
+};
+
+const folderId = 'your-folder-id-here';  // Folder ID where your files are stored
+const fileNamesToDelete = ['file1.pdf', 'file2.jpg'];  // List of filenames to delete
+deleteSpecificFilesInFolder(folderId, fileNamesToDelete);
+
+
+
+module.exports = { testDrive, uploadFile, uploadDB, deleteSpecificFilesInFolder }
