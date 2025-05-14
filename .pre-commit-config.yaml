@@ -1,0 +1,6 @@
+repos:
+  - repo: https://github.com/IBM/detect-secrets
+    rev: 0.13.1+ibm.62.dss  # Use an available version
+    hooks:
+      - id: detect-secrets
+        args: []
