@@ -2,6 +2,7 @@ Backend/config/*.json
 .env
 *.json
 Backend/config/*.json
+rzp.csv
 
 # Dependency directories
 node_modules/
