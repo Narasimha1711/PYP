@@ -5,6 +5,7 @@ import { updateGrade, setGrades, setCurrentSemester, resetGrades } from '../../a
 import { useDispatch, useSelector } from 'react-redux';
 // import { ProgressBar } from '../../../../gradeFiles/ProgressBar';
 import { ProgressBar } from '../../components/Grade/ProgressBar';
+import { useNavigate } from "react-router-dom";
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
@@ -95,6 +96,7 @@ function App() {
   const semesters = useSelector((state) => state.grades.semesters) || initialSemesters;
   const currentSemester = useSelector((state) => state.grades.currentSemester) || 1;
   const cgpa = useSelector((state) => state.grades.cgpa) || 0; // Get CGPA from Redux
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchGrades = async () => {
@@ -135,6 +137,24 @@ function App() {
 
     fetchGrades();
   }, [dispatch]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:9000/pyp", {
+          withCredentials: true, // Ensure cookies are sent with the request
+        });
+      } catch (error) {
+        if(error?.response?.data?.message === "Unauthorized: No token provided") {
+          navigate('/signin')
+        }
+        if(error)
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const handleGradeChange = (subjectId, grade) => {
     dispatch(updateGrade({ semesterNumber: currentSemester, subjectId, grade }));

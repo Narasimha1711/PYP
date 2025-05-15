@@ -1,6 +1,7 @@
 repos:
   - repo: https://github.com/IBM/detect-secrets
-    rev: 0.13.1+ibm.62.dss  # Use an available version
+    rev: 0.13.1+ibm.62.dss
     hooks:
       - id: detect-secrets
         args: []
+        exclude: 'package-lock\.json|node_modules|dist|\.vite'

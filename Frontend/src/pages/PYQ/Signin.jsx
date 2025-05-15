@@ -1,21 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import { GraduationCap, Lock, ArrowRight, UserCircle, X } from 'lucide-react';
 import { useUserLoginMutation } from '../../app/userApi';
-import { Navigate, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { setUserInfo } from '../../app/userSlice';
 
 function Signin() {
   const [rollNo, setRollNo] = useState('');
   const [password, setPassword] = useState('');
-  const [login, { data, isLoading, error }] = useUserLoginMutation();
+  const [login, { isLoading, error }] = useUserLoginMutation();
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
   const [apiError, setApiError] = useState('');
 
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('error') === 'google_auth_failed') {
+      setApiError('Google Sign-In failed. Please try again.');
+    }
+  }, [location]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setApiError(''); // Clear previous errors
+    setApiError('');
     try {
       const response = await login({ rollNo, password }).unwrap();
       dispatch(setUserInfo({ id: rollNo }));
@@ -25,6 +33,10 @@ function Signin() {
     }
   };
 
+  const handleGoogleSignin = () => {
+    window.location.href = 'http://localhost:9000/auth/google';
+  };
+
   const dismissError = () => {
     setApiError('');
   };
@@ -32,7 +44,6 @@ function Signin() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-blue-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        {/* Logo and Title */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-indigo-600 text-white mb-4">
             <GraduationCap size={32} />
@@ -41,7 +52,6 @@ function Signin() {
           <p className="text-gray-600 mt-2">Sign in to access your account</p>
         </div>
 
-        {/* Error Message */}
         {apiError && (
           <div className="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-center justify-between">
             <div className="flex items-center">
@@ -67,7 +77,6 @@ function Signin() {
           </div>
         )}
 
-        {/* Sign In Form */}
         <div className="bg-white rounded-xl shadow-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -136,6 +145,31 @@ function Signin() {
               )}
             </button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={handleGoogleSignin}
+                className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <img
+                  className="h-5 w-5 mr-2"
+                  src="https://www.svgrepo.com/show/355037/google.svg"
+                  alt="Google logo"
+                />
+                Sign in with Google
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

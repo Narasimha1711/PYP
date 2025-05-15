@@ -13,6 +13,7 @@ import UploadTimeTable from './pages/TimeTable/TimeTableUpload';
 import UserTimeTable from './pages/TimeTable/UserTimeTable';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import CompleteSignup from './pages/PYQ/CompleteSignup';
 
 function AppContent() {
   const location = useLocation();
@@ -24,6 +25,7 @@ function AppContent() {
       <Routes>
         <Route path="/signup" element={<SignUp />} />
         <Route path="/signin" element={<Signin />} />
+        <Route path="/complete-signup" element={<CompleteSignup />} />
         <Route path="/pyp" element={<PypHome />} />
         <Route path="/upload" element={<Upload />} />
         <Route path="/pyp/:subjectId" element={<ExamTypeView />} />

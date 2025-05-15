@@ -3,10 +3,9 @@ import { GraduationCap } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useUserSignupMutation } from '../../app/userApi';
 
-
 function SignUp() {
   const [rollNo, setRollNo] = useState('');
-  const [name, setname] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState(null);
@@ -16,14 +15,18 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setErrorMessage(null); // Reset error message before submitting
+    setErrorMessage(null);
 
     try {
-      const response = await signup({ rollNo, name, email, password }).unwrap();
-      navigate('/signin'); // Redirect to login after successful signup
+      const response = await signup({ rollNo, name, gmail: email, password }).unwrap();
+      navigate('/signin');
     } catch (error) {
       setErrorMessage(error?.data?.message || 'Signup failed. Please try again.');
     }
+  };
+
+  const handleGoogleSignup = () => {
+    window.location.href = 'http://localhost:9000/auth/google';
   };
 
   return (
@@ -39,7 +42,11 @@ function SignUp() {
 
         <div className="bg-white rounded-3xl shadow-lg p-8">
           <form onSubmit={handleSubmit} className="space-y-6">
-            {errorMessage && <p className="text-red-500 text-sm">{errorMessage}</p>}
+            {errorMessage && (
+              <div className="mb-6 bg-red-50 border-l-4 border-red-500 text-red-700 p-4 rounded-lg flex items-center justify-between">
+                <p className="text-sm">{errorMessage}</p>
+              </div>
+            )}
 
             <div>
               <label className="block text-gray-700 text-sm font-medium mb-2">Roll Number</label>
@@ -58,7 +65,7 @@ function SignUp() {
               <input
                 type="text"
                 value={name}
-                onChange={(e) => setname(e.target.value)}
+                onChange={(e) => setName(e.target.value)}
                 className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-transparent placeholder-gray-400"
                 placeholder="Choose a name"
                 required
@@ -106,6 +113,31 @@ function SignUp() {
               {isLoading ? 'Creating Account...' : 'Create Account'}
             </button>
           </form>
+
+          <div className="mt-6">
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center text-sm">
+                <span className="px-2 bg-white text-gray-500">Or continue with</span>
+              </div>
+            </div>
+
+            <div className="mt-6">
+              <button
+                onClick={handleGoogleSignup}
+                className="w-full flex items-center justify-center px-4 py-2 border border-gray-300 rounded-lg shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50"
+              >
+                <img
+                  className="h-5 w-5 mr-2"
+                  src="https://www.svgrepo.com/show/355037/google.svg"
+                  alt="Google logo"
+                />
+                Sign up with Google
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -12,7 +12,7 @@ const SemesterSchema = new mongoose.Schema({
 });
 
 const UserSchema = new mongoose.Schema({
-    rollNo: { type: String, required: true },
+    rollNo: { type: String, required: true, unique: true },
     name: { type: String, required: true },
     gmail: { type: String, required: false },
     password: { type: String, required: false},

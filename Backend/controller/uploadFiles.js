@@ -233,7 +233,7 @@ const deleteSpecificFilesInFolder = async (folderId, fileNamesToDelete) => {
 
 const folderId = 'your-folder-id-here';  // Folder ID where your files are stored
 const fileNamesToDelete = ['file1.pdf', 'file2.jpg'];  // List of filenames to delete
-deleteSpecificFilesInFolder(folderId, fileNamesToDelete);
+// deleteSpecificFilesInFolder(folderId, fileNamesToDelete);
 
 
 

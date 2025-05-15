@@ -7,21 +7,42 @@ const errorMiddleware = require('./middleware/errorMiddleware');
 const PORT = process.env.PORT;
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
+const session = require('express-session');
+const passport = require('passport');
 const PypRoutes = require("./routes/pypRoutes");
 const gradeRoutes = require('./routes/gradeRoutes.js')
-
 const TimeTableRoutes = require("./routes/timeTableRoutes.js");
 const UserTimeTableRoutes = require("./routes/userTimeTableRoutes.js");
+const uploadRoutes = require("./routes/upload");
+const AuthRoutes = require("./routes/auth.js");
+require('./config/passport'); // Add this line to load the Google strategy
 
 connectDB();
+
+app.use(
+    cors({
+      origin: 'http://localhost:5173',
+      credentials: true,
+    })
+  );
+  
+  app.use(
+    session({
+      secret: process.env.SECRET_KEY,
+      resave: false,
+      saveUninitialized: false,
+    })
+  );
+  
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(express.json());
 app.use(errorMiddleware);
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
-app.use(cors({ origin: 'http://localhost:5173', credentials: true }));
 
-const AuthRoutes = require("./routes/auth.js");
+
 
 
 app.use("/auth", AuthRoutes);
@@ -41,7 +62,7 @@ app.get("/", (req, res)=>{
 app.use("/grade", gradeRoutes);
 
 
-const uploadRoutes = require("./routes/upload");
+
 
 
 app.use("/api", uploadRoutes); 
