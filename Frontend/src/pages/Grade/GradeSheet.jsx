@@ -3,7 +3,8 @@ import axios from 'axios';
 import { GradeSelect } from '../../components/Grade/GradeSelect';
 import { updateGrade, setGrades, setCurrentSemester, resetGrades } from '../../app/gradeSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { ProgressBar } from '../../../../gradeFiles/ProgressBar';
+// import { ProgressBar } from '../../../../gradeFiles/ProgressBar';
+import { ProgressBar } from '../../components/Grade/ProgressBar';
 
 class ErrorBoundary extends React.Component {
   state = { hasError: false };
