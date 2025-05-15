@@ -20,8 +20,8 @@ export const ProgressBar = ({ value, max, label }) => {
         aria-label={label}
       >
         <div
-          className="h-3 rounded-full bg-indigo-500 transition-all duration-300"
-          style={{ width: `${percentage}%`, backgroundColor: percentage > 0 ? '#6366F1' : 'transparent' }}
+          className="bg-indigo-500 h-3 rounded-full transition-all duration-300"
+          style={{ width: `${percentage}%` }}
         />
       </div>
     </div>
