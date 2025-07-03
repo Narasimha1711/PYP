@@ -1,5 +1,6 @@
 const drive = require("../config/drive");
 const credentials = require('../config/drive.json');
+require('dotenv').config();
 const { JWT } = require('google-auth-library');
 const { google } = require('googleapis');
 const fs = require("fs");
@@ -31,8 +32,10 @@ async function makeFilePublic(fileId, userEmail) {
 }
 
 const jwtClient = new JWT({
-    email: credentials.client_email,
-    key: credentials.private_key,
+    // email: credentials.client_email,
+    email: process.env.GOOGLE_CLIENT_EMAIL,
+    // key: credentials.private_key,
+    key: process.env.GOOGLE_PRIVATE_KEY,
     scopes: ['https://www.googleapis.com/auth/drive.metadata.readonly'],
   });
   
