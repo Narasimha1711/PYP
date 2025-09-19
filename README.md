@@ -22,12 +22,12 @@ cd PYP
 **Setup Backend**
 cd backend
 npm install
-npm run dev
+nodemon server.js
 
 **Setup Frontend**
 cd frontend
 npm install
-npm start
+npm run dev
 
 **Access**
 Frontend → http://localhost:5173
